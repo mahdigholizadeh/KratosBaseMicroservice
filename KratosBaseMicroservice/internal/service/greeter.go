@@ -1,6 +1,7 @@
 package service
 
 import (
+	"KratosBaseMicroservice/internal/myfunction"
 	"context"
 
 	v1 "KratosBaseMicroservice/api/helloworld/v1"
@@ -25,5 +26,10 @@ func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1
 	if err != nil {
 		return nil, err
 	}
-	return &v1.HelloReply{Message: "Hello " + g.Hello}, nil
+	var a float64 = 178.012
+	b := 8956.124
+	var HelloMassage *string
+	HelloMassage, _ = myfunction.DataTrafficSizeCalculator(&a, &b)
+
+	return &v1.HelloReply{Message: *HelloMassage + " " + g.Hello}, nil
 }
