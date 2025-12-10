@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package trafficinformation.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "KratosBaseMicroservice/api/trafficinformation/v1;v1";
+
+service trafficinformation {
+    type TrafficObserver interface {
+        Bandwith(value *float) (Bandwith_value *string, error)
+        DailyTraffic(value *float) (DailyTraffic_value *string)
+    }
+    rpc Bandwith (value) returns (Bandwith_value){
+        option (google.api.http) = {
+            get : "/trafficinformation/{name}"
+        };
+    }
+}
