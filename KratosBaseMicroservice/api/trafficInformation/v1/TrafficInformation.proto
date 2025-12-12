@@ -7,13 +7,25 @@ import "google/api/annotations.proto";
 option go_package = "KratosBaseMicroservice/api/trafficinformation/v1;v1";
 
 service trafficinformation {
-    type TrafficObserver interface {
-        Bandwith(value *float) (Bandwith_value *string, error)
-        DailyTraffic(value *float) (DailyTraffic_value *string)
-    }
-    rpc Bandwith (value) returns (Bandwith_value){
+    rpc GetBandwidth (BandwithRequest) returns (BandwithResponse) {
         option (google.api.http) = {
-            get : "/trafficinformation/{name}"
+            get: "/trafficinformation/bandwith"
         };
     }
+    rpc GetDailyTraffic (DailyTrafficRequest) returns (DailyTrafficResponse) {
+        option (google.api.http) = {
+            get:"/trafficinformation/daily"
+        };
+    }
+}
+
+message BandwithRequest {}
+message DailyTrafficRequest {}
+
+message BandwithResponse {
+    string Bandwith = 1;
+}
+
+message DailyTrafficResponse {
+    string daily_traffic = 1;
 }
