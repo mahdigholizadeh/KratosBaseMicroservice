@@ -4,13 +4,13 @@ import (
 	"KratosBaseMicroservice/internal/myfunction"
 	"context"
 
-	v1 "KratosBaseMicroservice/api/helloworld/v1"
+	hellov1 "KratosBaseMicroservice/api/helloworld/v1"
 	"KratosBaseMicroservice/internal/biz"
 )
 
 // GreeterService is a greeter service.
 type GreeterService struct {
-	v1.UnimplementedGreeterServer
+	hellov1.UnimplementedGreeterServer
 
 	uc *biz.GreeterUsecase
 }
@@ -21,7 +21,7 @@ func NewGreeterService(uc *biz.GreeterUsecase) *GreeterService {
 }
 
 // SayHello implements helloworld.GreeterServer.
-func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
+func (s *GreeterService) SayHello(ctx context.Context, in *hellov1.HelloRequest) (*hellov1.HelloReply, error) {
 	g, err := s.uc.CreateGreeter(ctx, &biz.Greeter{Hello: in.Name})
 	if err != nil {
 		return nil, err
@@ -31,5 +31,5 @@ func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1
 	var HelloMassage *string
 	HelloMassage, _ = myfunction.DataTrafficSizeCalculator(&a, &b)
 
-	return &v1.HelloReply{Message: *HelloMassage + " " + g.Hello}, nil
+	return &hellov1.HelloReply{Message: *HelloMassage + " " + g.Hello}, nil
 }
