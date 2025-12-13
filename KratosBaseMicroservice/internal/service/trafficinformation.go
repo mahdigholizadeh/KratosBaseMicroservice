@@ -4,8 +4,9 @@ import (
 	"context"
 	"fmt"
 	"math"
-	
-	v1 "KratosBaseMicroservice/api/trafficinformation/v1
+	v1 "KratosBaseMicroservice/api/trafficinformation/v1"
+
+	//"KRATOSBASEMICROSERVICE/KratosBaseMicroservice/api/trafficinformation/v1"
 )
 
 type TrafficInformation struct {
