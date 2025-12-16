@@ -1,0 +1,17 @@
+version: v2
+plugins:
+  - plugin: buf.build/protocolbuffers/go
+    out: api  # Adjust if your api dir is elsewhere; generates under the go_package path
+    opt: paths=source_relative
+
+  - plugin: buf.build/grpc/go
+    out: api
+    opt: paths=source_relative
+
+  - plugin: buf.build/go-kratos/go-http  # Generates HTTP bindings for (google.api.http) annotations
+    out: api
+    opt: paths=source_relative
+
+  - plugin: buf.build/go-kratos/go-errors  # Generates error handling from enums like ErrorReason
+    out: api
+    opt: paths=source_relative

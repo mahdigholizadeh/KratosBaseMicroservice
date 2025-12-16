@@ -49,3 +49,9 @@ func (s *TrafficinformationService) GetDailyTraffic(ctx context.Context, req *tr
         // ...
     }, nil
 }
+
+func NewTrafficinformationService() *TrafficinformationService {
+    return &TrafficinformationService{}
+}
+
+
