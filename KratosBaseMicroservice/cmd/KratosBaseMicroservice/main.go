@@ -15,6 +15,11 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 
 	_ "go.uber.org/automaxprocs"
+
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+
+	kratoszap "github.com/go-kratos/kratos/contrib/log/zap/v2"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -27,6 +32,8 @@ var (
 	flagconf string
 
 	id, _ = os.Hostname()
+    // Define log level (you can make this configurable via env var later)
+	logLevel = zap.NewAtomicLevelAt(zap.InfoLevel)
 )
 
 func init() {
@@ -48,21 +55,40 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 }
 
 func main() {
-	flag.Parse()
-	logger := log.With(log.NewStdLogger(os.Stdout),
-		"ts", log.DefaultTimestamp,
-		"caller", log.DefaultCaller,
+	flag.Parse() // read flags and update global variables if needed Parses command-line flags and Reads -conf value into flagconf
+	// Production config + set level
+	zapConfig := zap.NewProductionConfig()
+	zapConfig.Level = logLevel
+	// Optional: make output more readable in development
+	zapConfig.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+    zapConfig.EncoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder // INFO, ERROR, etc.
+    z, err := zapConfig.Build(zap.AddCallerSkip(1)) // AddCallerSkip helps with correct caller info
+    if err != nil {
+    panic(err)
+    }
+	// Create base logger (returns concrete type, but we store as interface)
+	baseLogger := kratoszap.NewLogger(z)
+	// Now use the interface type — this is the key fix!
+	var logger log.Logger = baseLogger
+	// Add your contextual fields (these will appear in every log entry)
+	logger = log.With(logger,
+		"ts", log.DefaultTimestamp,     // timestamp
+		"caller", log.DefaultCaller,    // file:line
 		"service.id", id,
 		"service.name", Name,
 		"service.version", Version,
-		"trace.id", tracing.TraceID(),
-		"span.id", tracing.SpanID(),
-	)
-	c := config.New(
-		config.WithSource(
-			file.NewSource(flagconf),
+		"trace.id", tracing.TraceID(),  // OpenTelemetry trace ID
+		"span.id", tracing.SpanID(),    // OpenTelemetry span ID
+    ) 
+	// Optional: set as global logger so log.Info(), log.Error() etc. work everywhere
+    log.SetLogger(logger)
+	// load configuration
+	c := config.New( //Creates a configuration manager
+		config.WithSource( //Reads config from files
+			file.NewSource(flagconf), //flagconf is the config directory or file
 		),
 	)
+	///
 	defer c.Close()
 
 	if err := c.Load(); err != nil {
