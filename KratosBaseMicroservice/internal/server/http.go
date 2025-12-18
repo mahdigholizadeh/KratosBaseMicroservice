@@ -8,6 +8,8 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
+
+	trafficv1 "KratosBaseMicroservice/api/trafficInformation/v1"
 )
 
 // NewHTTPServer new an HTTP server.
@@ -30,3 +32,8 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 	v1.RegisterGreeterHTTPServer(srv, greeter)
 	return srv
 }
+
+func RegisterHTTPServer(srv *http.Server, svc *service.TrafficinformationService) {
+	trafficv1.RegisterTrafficinformationHTTPServer(srv, svc)
+}
+

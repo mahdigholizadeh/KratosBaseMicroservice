@@ -1,9 +1,9 @@
 package service
 
 import (
-    // Change alias from 'v1' to 'trafficv1'
-    trafficv1 "KratosBaseMicroservice/api/trafficInformation/v1"
-    "context"
+	// Change alias from 'v1' to 'trafficv1'
+	trafficv1 "KratosBaseMicroservice/api/trafficInformation/v1"
+	"context"
 )
 
 /*type TrafficInformation struct {
@@ -32,26 +32,24 @@ func (s *TrafficInformation) GetDailyTraffic(ctx context.Context, req *v1.DailyT
 // The struct name should be consistent and reflect the Kratos service.
 // It should also satisfy the generated interface pb.TrafficinformationServer.
 type TrafficinformationService struct {
-    trafficv1.UnimplementedTrafficinformationServer
+	trafficv1.UnimplementedTrafficinformationServer
 }
 
 // Update all function signatures and calls to use the new alias
 func (s *TrafficinformationService) GetBandwidth(ctx context.Context, req *trafficv1.BandwithRequest) (*trafficv1.BandwithResponse, error) {
-    // ... logic
-    return &trafficv1.BandwithResponse{
-        // ...
-    }, nil
+	// ... logic
+	return &trafficv1.BandwithResponse{
+		// ...
+	}, nil
 }
 
 func (s *TrafficinformationService) GetDailyTraffic(ctx context.Context, req *trafficv1.DailyTrafficRequest) (*trafficv1.DailyTrafficResponse, error) {
-    // ... logic
-    return &trafficv1.DailyTrafficResponse{
-        // ...
-    }, nil
+	// ... logic
+	return &trafficv1.DailyTrafficResponse{
+		// ...
+	}, nil
 }
 
-func NewTrafficinformationService() *TrafficinformationService {
-    return &TrafficinformationService{}
+func NewTrafficInformationService() *TrafficinformationService {
+	return &TrafficinformationService{}
 }
-
-
