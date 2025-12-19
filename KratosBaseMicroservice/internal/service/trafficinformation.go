@@ -39,6 +39,7 @@ type TrafficinformationService struct {
 func (s *TrafficinformationService) GetBandwidth(ctx context.Context, req *trafficv1.BandwithRequest) (*trafficv1.BandwithResponse, error) {
 	// ... logic
 	return &trafficv1.BandwithResponse{
+		Bandwith: "120 Gbps",
 		// ...
 	}, nil
 }
@@ -47,6 +48,7 @@ func (s *TrafficinformationService) GetDailyTraffic(ctx context.Context, req *tr
 	// ... logic
 	return &trafficv1.DailyTrafficResponse{
 		// ...
+		DailyTraffic: "560 GB",
 	}, nil
 }
 
